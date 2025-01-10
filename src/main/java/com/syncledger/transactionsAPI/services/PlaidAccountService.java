@@ -6,7 +6,7 @@ import com.plaid.client.model.AccountsGetResponse;
 import com.plaid.client.request.PlaidApi;
 import com.syncledger.transactionsAPI.entities.BankAccount;
 import com.syncledger.transactionsAPI.mappers.BankAccountMapper;
-import com.syncledger.transactionsAPI.repositories.BankAccountRespository;
+import com.syncledger.transactionsAPI.repositories.BankAccountRepository;
 import com.syncledger.transactionsAPI.repositories.PlaidItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PlaidAccountService {
     @Autowired
     private PlaidItemRepository plaidItemRepository;
     @Autowired
-    private BankAccountRespository bankAccountRespository;
+    private BankAccountRepository bankAccountRepository;
     @Autowired
     private BankAccountMapper bankAccountMapper;
 
@@ -43,7 +43,7 @@ public class PlaidAccountService {
             List<BankAccount> bankAccountsToSave = plaidAccounts.stream()
                     .map(bankAccountMapper::mapToEntity)
                     .collect(Collectors.toList());
-            bankAccountRespository.saveAll(bankAccountsToSave);
+            bankAccountRepository.saveAll(bankAccountsToSave);
         }
     }
 }

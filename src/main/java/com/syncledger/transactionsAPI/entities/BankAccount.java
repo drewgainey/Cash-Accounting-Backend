@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "bank_accounts")
 @Getter
@@ -21,4 +23,7 @@ public class BankAccount {
     private String type;
     private String subType;
     private double balance;
+
+    @OneToMany(mappedBy = "bankAccount")
+    private List<BankAccountFieldDefaults> defaultFields;
 }
