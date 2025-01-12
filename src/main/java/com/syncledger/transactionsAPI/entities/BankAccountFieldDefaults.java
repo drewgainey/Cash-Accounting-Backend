@@ -1,8 +1,13 @@
 package com.syncledger.transactionsAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "bank_account_field_defaults")
 public class BankAccountFieldDefaults {
     @Id
@@ -15,6 +20,7 @@ public class BankAccountFieldDefaults {
 
     @ManyToOne
     @JoinColumn(name = "accounting_field_value_id", nullable = false)
+    @JsonBackReference
     private AccountingFieldValue fieldValue;
 
 }

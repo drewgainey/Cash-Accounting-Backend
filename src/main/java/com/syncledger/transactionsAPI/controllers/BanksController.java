@@ -1,6 +1,8 @@
 package com.syncledger.transactionsAPI.controllers;
 
 import com.syncledger.transactionsAPI.entities.BankAccount;
+import com.syncledger.transactionsAPI.entities.response.BankAccountsGetResponseDTO;
+import com.syncledger.transactionsAPI.mappers.BankAccountGetResponseDTOMapper;
 import com.syncledger.transactionsAPI.repositories.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,13 @@ public class BanksController {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @Autowired
+    private BankAccountGetResponseDTOMapper bankAccountGetResponseDTOMapper;
+
     @GetMapping("/accounts")
-    public List<BankAccount> getBankAccounts() {
-        System.out.println("Getting bank accounts");
-        return bankAccountRepository.findAllBankAccountsWithDefaults();
+    public List<BankAccountsGetResponseDTO> getBankAccounts() {
+       List<BankAccount> banks = bankAccountRepository.findAllBankAccountsWithDefaults();
+       System.out.println(banks);
+       return banks.stream().map(bankAccountGetResponseDTOMapper::mapToDTO).toList();
     }
 }

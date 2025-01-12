@@ -1,5 +1,6 @@
 package com.syncledger.transactionsAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class BankAccount {
     private String subType;
     private double balance;
 
-    @OneToMany(mappedBy = "bankAccount")
+    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER)
+    @JsonManagedReference
     private List<BankAccountFieldDefaults> defaultFields;
 }
