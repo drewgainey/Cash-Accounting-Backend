@@ -8,7 +8,9 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "bank_account_field_defaults")
+@Table(name = "bank_account_field_defaults", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"bank_account_id", "accounting_field_id"})
+})
 public class BankAccountFieldDefaults {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +21,11 @@ public class BankAccountFieldDefaults {
     private BankAccount bankAccount;
 
     @ManyToOne
-    @JoinColumn(name = "accounting_field_value_id", nullable = false)
+    @JoinColumn(name = "accounting_field_id", nullable = false)
+    private AccountingField accountingField;
+
+    @ManyToOne
+    @JoinColumn(name = "accounting_field_value_id", nullable = true)
     @JsonBackReference
     private AccountingFieldValue fieldValue;
 
