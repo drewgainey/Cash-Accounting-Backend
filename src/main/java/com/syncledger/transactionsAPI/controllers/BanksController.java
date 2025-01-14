@@ -1,9 +1,9 @@
 package com.syncledger.transactionsAPI.controllers;
 
 import com.syncledger.transactionsAPI.entities.BankAccount;
-import com.syncledger.transactionsAPI.entities.request.BankAccountDefaultFieldPutDTO;
+import com.syncledger.transactionsAPI.entities.DTO.BankAccountDefaultFieldPutDTO;
 import com.syncledger.transactionsAPI.entities.response.APIResponse;
-import com.syncledger.transactionsAPI.entities.response.BankAccountsGetResponseDTO;
+import com.syncledger.transactionsAPI.entities.DTO.BankAccountsGetResponseDTO;
 import com.syncledger.transactionsAPI.mappers.BankAccountGetResponseDTOMapper;
 import com.syncledger.transactionsAPI.repositories.BankAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class BanksController {
 
     @PostMapping("/account-defaults")
     public APIResponse<String> updateAccountDefaults(@RequestBody BankAccountDefaultFieldPutDTO bankAccountDefaultFieldPutDTO) {
-        
+
         return new APIResponse<>(
                 "200",
                 "success",

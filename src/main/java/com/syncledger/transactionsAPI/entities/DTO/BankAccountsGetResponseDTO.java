@@ -1,4 +1,4 @@
-package com.syncledger.transactionsAPI.entities.response;
+package com.syncledger.transactionsAPI.entities.DTO;
 
 import lombok.Data;
 

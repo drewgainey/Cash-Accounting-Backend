@@ -1,8 +1,8 @@
 package com.syncledger.transactionsAPI.mappers;
 
 import com.syncledger.transactionsAPI.entities.BankAccount;
-import com.syncledger.transactionsAPI.entities.response.BankAccountDefaultFieldDTO;
-import com.syncledger.transactionsAPI.entities.response.BankAccountsGetResponseDTO;
+import com.syncledger.transactionsAPI.entities.DTO.BankAccountDefaultFieldDTO;
+import com.syncledger.transactionsAPI.entities.DTO.BankAccountsGetResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,6 +1,5 @@
-package com.syncledger.transactionsAPI.entities.request;
+package com.syncledger.transactionsAPI.entities.DTO;
 
-import com.syncledger.transactionsAPI.entities.response.BankAccountDefaultFieldDTO;
 import lombok.Data;
 
 import java.util.List;
