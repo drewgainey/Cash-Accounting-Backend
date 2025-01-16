@@ -6,6 +6,7 @@ import com.syncledger.transactionsAPI.entities.DTO.BankAccountsGetResponseDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class BankAccountGetResponseDTOMapper {
@@ -20,12 +21,11 @@ public class BankAccountGetResponseDTOMapper {
         dto.setBalance(bankAccount.getBalance());
         List<BankAccountDefaultFieldDTO> defaults = bankAccount.getDefaultFields().stream()
                 .map(defaultField -> new BankAccountDefaultFieldDTO(
-                        defaultField.getFieldValue().getAccountingField().getFieldName(),
-                        defaultField.getFieldValue().getAccountingField().getId(),
-                        defaultField.getFieldValue().getFieldValue(),
-                        defaultField.getFieldValue().getId()
-        )).toList();
-
+                    defaultField.getAccountingField().getFieldName(),
+                    defaultField.getAccountingField().getId(),
+                    defaultField.getFieldValue().getFieldValue(),
+                    defaultField.getFieldValue().getId())
+        ).collect(Collectors.toList());
         dto.setDefaultFields(defaults);
         return dto;
     }

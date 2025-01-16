@@ -1,6 +1,7 @@
 package com.syncledger.transactionsAPI.controllers;
 
 import com.syncledger.transactionsAPI.entities.AccountingField;
+import com.syncledger.transactionsAPI.entities.response.APIResponse;
 import com.syncledger.transactionsAPI.repositories.AccountingFieldRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,12 @@ public class AccountingFieldController {
     private AccountingFieldRepository accountingFieldRepository;
 
     @GetMapping
-    public List<AccountingField> getAllAccountingFields() {
-        return accountingFieldRepository.findAll();
+    public APIResponse<List<AccountingField>> getAllAccountingFields() {
+        return new APIResponse<>(
+                "200",
+                "success",
+                accountingFieldRepository.findAll(),
+                null
+        );
     }
 }

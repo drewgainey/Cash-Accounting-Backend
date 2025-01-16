@@ -15,6 +15,6 @@ INSERT INTO accounting_field_values (id, field_value, field_id) VALUES (5, 'Sale
 
 --Set Default Accounting Fields for banks
 INSERT INTO bank_account_field_defaults (id, bank_account_id, accounting_field_id, accounting_field_value_id) VALUES (1, 1, 1,1);
-INSERT INTO bank_account_field_defaults (id, bank_account_id, accounting_field_id, accounting_field_value_id) VALUES (2, 2, 1, 5);
-INSERT INTO bank_account_field_defaults (id, bank_account_id, accounting_field_id, accounting_field_value_id) VALUES (3, 1, 2, 2);
+INSERT INTO bank_account_field_defaults (id, bank_account_id, accounting_field_id, accounting_field_value_id) VALUES (2, 1, 2, 5);
+INSERT INTO bank_account_field_defaults (id, bank_account_id, accounting_field_id, accounting_field_value_id) VALUES (3, 2, 1, 2);
 INSERT INTO bank_account_field_defaults (id, bank_account_id, accounting_field_id, accounting_field_value_id) VALUES (4, 2, 2, 4);

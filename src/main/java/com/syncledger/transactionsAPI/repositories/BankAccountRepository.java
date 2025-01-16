@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
-    @Query("SELECT b FROM BankAccount b JOIN FETCH b.defaultFields")
+    @Query("SELECT DISTINCT b FROM BankAccount b LEFT JOIN FETCH b.defaultFields df LEFT JOIN FETCH df.accountingField LEFT JOIN FETCH df.fieldValue")
     List<BankAccount> findAllBankAccountsWithDefaults();
 }

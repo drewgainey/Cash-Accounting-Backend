@@ -1,5 +1,6 @@
 package com.syncledger.transactionsAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,5 +19,6 @@ public class AccountingFieldValue {
 
     @ManyToOne
     @JoinColumn(name = "field_id", nullable = false)
+    @JsonBackReference
     private AccountingField accountingField;
 }

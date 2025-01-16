@@ -6,6 +6,7 @@ import com.syncledger.transactionsAPI.entities.response.APIResponse;
 import com.syncledger.transactionsAPI.entities.DTO.BankAccountsGetResponseDTO;
 import com.syncledger.transactionsAPI.mappers.BankAccountGetResponseDTOMapper;
 import com.syncledger.transactionsAPI.repositories.BankAccountRepository;
+import com.syncledger.transactionsAPI.services.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,9 @@ public class BanksController {
     @Autowired
     private BankAccountGetResponseDTOMapper bankAccountGetResponseDTOMapper;
 
+    @Autowired
+    private BankAccountService bankAccountService;
+
     @GetMapping("/accounts")
     public APIResponse<List<BankAccountsGetResponseDTO>> getBankAccounts() {
        List<BankAccount> banks = bankAccountRepository.findAllBankAccountsWithDefaults();
@@ -35,13 +39,23 @@ public class BanksController {
     }
 
     @PostMapping("/account-defaults")
-    public APIResponse<String> updateAccountDefaults(@RequestBody BankAccountDefaultFieldPutDTO bankAccountDefaultFieldPutDTO) {
+    public APIResponse<String> updateAccountDefaults(@RequestBody BankAccountDefaultFieldPutDTO dto) {
+        boolean updateSuccessful = bankAccountService.updateDefaultFields(dto.getBankAccountId(), dto.getDefaultFields());
 
-        return new APIResponse<>(
-                "200",
-                "success",
-                null,
-                null
-        );
+        if (updateSuccessful) {
+            return new APIResponse<>(
+                    "200",
+                    "success",
+                    null,
+                    null
+            );
+        } else {
+            return new APIResponse<>(
+                    "400",
+                    "failure",
+                    null,
+                    null
+            );
+        }
     }
 }

@@ -25,7 +25,7 @@ public class BankAccountFieldDefaults {
     private AccountingField accountingField;
 
     @ManyToOne
-    @JoinColumn(name = "accounting_field_value_id", nullable = true)
+    @JoinColumn(name = "accounting_field_value_id")
     @JsonBackReference
     private AccountingFieldValue fieldValue;
 
