@@ -2,6 +2,7 @@ package com.syncledger.transactionsAPI.controllers;
 
 import com.syncledger.transactionsAPI.entities.BankAccount;
 import com.syncledger.transactionsAPI.entities.DTO.BankAccountDefaultFieldPutDTO;
+import com.syncledger.transactionsAPI.entities.request.BankAccountUpdateRequest;
 import com.syncledger.transactionsAPI.entities.response.APIResponse;
 import com.syncledger.transactionsAPI.entities.DTO.BankAccountsGetResponseDTO;
 import com.syncledger.transactionsAPI.mappers.BankAccountGetResponseDTOMapper;
@@ -38,24 +39,25 @@ public class BanksController {
        );
     }
 
-    @PostMapping("/account-defaults")
-    public APIResponse<String> updateAccountDefaults(@RequestBody BankAccountDefaultFieldPutDTO dto) {
-        boolean updateSuccessful = bankAccountService.updateDefaultFields(dto.getBankAccountId(), dto.getDefaultFields());
-
-        if (updateSuccessful) {
-            return new APIResponse<>(
-                    "200",
-                    "success",
-                    null,
-                    null
-            );
-        } else {
-            return new APIResponse<>(
-                    "400",
-                    "failure",
-                    null,
-                    null
-            );
+    @PutMapping("/account-defaults")
+    public APIResponse<String> updateAccountDefaults(@RequestBody BankAccountUpdateRequest request) {
+        System.out.println("Updating default bank accounts");
+        for (BankAccountDefaultFieldPutDTO bank : request.getBanksToUpdate()) {
+            boolean updateSuccessful = bankAccountService.updateDefaultFields(bank.getBankAccountId(), bank.getDefaultFields());
+            if (!updateSuccessful) {
+                return new APIResponse<>(
+                        "400",
+                        "failure",
+                        null,
+                        null
+                );
+            }
         }
+        return new APIResponse<>(
+                "200",
+                "success",
+                null,
+                null
+        );
     }
 }
