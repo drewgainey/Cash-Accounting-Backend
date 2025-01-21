@@ -15,6 +15,9 @@ public class AccountingFieldValue {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    //Should always start with afv_
+    private String internalId;
+
     private String fieldValue;
 
     @ManyToOne

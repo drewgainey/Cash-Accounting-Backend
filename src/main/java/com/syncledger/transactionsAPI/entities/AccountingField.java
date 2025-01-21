@@ -16,6 +16,9 @@ public class AccountingField {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    // Should always start with af_
+    private String internalId;
+
     private String fieldName;
 
     @OneToMany(mappedBy = "accountingField")
