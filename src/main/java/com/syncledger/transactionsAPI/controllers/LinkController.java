@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.syncledger.transactionsAPI.services.PlaidLinkService;
 
+import java.util.concurrent.CompletableFuture;
+
 
 @RestController
 @RequestMapping("/v1/api/link")
@@ -37,16 +39,45 @@ public class LinkController {
         }
     }
 
-    @PostMapping("/exchange-token")
-    public ResponseEntity<String> exchangeToken(@RequestBody LinkTokenExchangeRequest linkTokenExchangeRequest) {
-        try {
-            String itemId = plaidLinkService.exchangeLinkToken(linkTokenExchangeRequest.getPublicToken());
-            eventPublisher.publishEvent(new TransactionsSyncEvent(this, itemId));
-            eventPublisher.publishEvent(new AccountsSyncEvent(this, itemId));
-            return ResponseEntity.ok().body("Token exchanged and transactions are being synchronized");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body(e.getMessage());
-        }
-    }
+//    @PostMapping("/exchange-token")
+//    public ResponseEntity<String> exchangeToken(@RequestBody LinkTokenExchangeRequest linkTokenExchangeRequest) {
+//        try {
+//            String itemId = plaidLinkService.exchangeLinkToken(linkTokenExchangeRequest.getPublicToken());
+//            eventPublisher.publishEvent(new AccountsSyncEvent(this, itemId));
+//            eventPublisher.publishEvent(new TransactionsSyncEvent(this, itemId));
+//            return ResponseEntity.ok().body("Token exchanged and transactions are being synchronized");
+//        } catch (Exception e) {
+//            return ResponseEntity.status(500).body(e.getMessage());
+//        }
+//    }
+@PostMapping("/exchange-token")
+public ResponseEntity<String> exchangeToken(@RequestBody LinkTokenExchangeRequest linkTokenExchangeRequest) {
+    try {
+        String itemId = plaidLinkService.exchangeLinkToken(linkTokenExchangeRequest.getPublicToken());
+        CompletableFuture<Boolean> accountsSyncComplete = new CompletableFuture<>();
+        eventPublisher.publishEvent(new AccountsSyncEvent(this, itemId, accountsSyncComplete));
 
+        // Listen for the completion and proceed based on the result asynchronously
+        accountsSyncComplete.thenAccept(success -> {
+            if (success) {
+                eventPublisher.publishEvent(new TransactionsSyncEvent(this, itemId));
+                notifyUI("success", "All tasks completed successfully.");
+            } else {
+                notifyUI("error", "Accounts sync failed.");
+            }
+        }).exceptionally(ex -> {
+            notifyUI("error", "Error during AccountsSync: " + ex.getMessage());
+            return null;
+        });
+
+        return ResponseEntity.accepted().body("Token exchange initiated. Check notifications for completion status.");
+    } catch (Exception e) {
+        return ResponseEntity.status(500).body(e.getMessage());
+    }
+}
+
+    private void notifyUI(String status, String message) {
+        // Method to notify the UI, could be via WebSocket, SSE, or any other mechanism
+        System.out.println(status + " " +message);
+    }
 }

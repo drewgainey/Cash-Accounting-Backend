@@ -14,8 +14,7 @@ import java.util.List;
 public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
-
+    private Long id;
     //the account id has potential to change....look into this in the API documents
     private String accountId;
     private String accountName;
@@ -28,4 +27,8 @@ public class BankAccount {
     @OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<BankAccountFieldDefaults> defaultFields;
+
+    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Transaction> accountTransactions;
 }

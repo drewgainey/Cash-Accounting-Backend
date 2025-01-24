@@ -29,7 +29,6 @@ public class BanksController {
     @GetMapping("/accounts")
     public APIResponse<List<BankAccountsGetResponseDTO>> getBankAccounts() {
        List<BankAccount> banks = bankAccountRepository.findAllBankAccountsWithDefaults();
-       System.out.println(banks);
        List<BankAccountsGetResponseDTO> data = banks.stream().map(bankAccountGetResponseDTOMapper::mapToDTO).toList();
        return new APIResponse<>(
                "200",

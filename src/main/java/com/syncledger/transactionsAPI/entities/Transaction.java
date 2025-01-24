@@ -16,10 +16,13 @@ public class Transaction {
     private Long id;
 
     private String transactionId;
-    private String accountId;
     private String merchantName;
     private String category;
     private Double amount;
     private String currency;
     private LocalDate date;
+
+    @ManyToOne
+    @JoinColumn(name = "accountId", referencedColumnName = "accountId")
+    private BankAccount bankAccount;
 }

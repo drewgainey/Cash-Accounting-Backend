@@ -16,7 +16,12 @@ public class AccountsSyncEventListener {
 
     @EventListener
     public void onAccountsSyncEvent(AccountsSyncEvent event) throws IOException {
-        String  itemId = event.getItemId();
-        plaidAccountService.syncPlaidBankAccounts(itemId);
+        try {
+            String  itemId = event.getItemId();
+            plaidAccountService.syncPlaidBankAccounts(itemId);
+            event.getCompletionFuture().complete(true);
+        } catch (IOException e) {
+            event.getCompletionFuture().completeExceptionally(e);
+        }
     }
 }
