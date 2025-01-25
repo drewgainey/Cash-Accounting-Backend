@@ -1,5 +1,6 @@
 package com.syncledger.transactionsAPI.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,5 +25,6 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "accountId", referencedColumnName = "accountId")
+    @JsonBackReference
     private BankAccount bankAccount;
 }
