@@ -5,11 +5,16 @@ import com.syncledger.transactionsAPI.entities.Transaction;
 import com.syncledger.transactionsAPI.entities.response.APIResponse;
 import com.syncledger.transactionsAPI.mappers.TransactionDTOMapper;
 import com.syncledger.transactionsAPI.repositories.TransactionRepository;
+import com.syncledger.transactionsAPI.services.ERPTransactionService;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @RestController
@@ -21,6 +26,9 @@ public class TransactionsController {
 
     @Autowired
     private TransactionDTOMapper transactionDTOMapper;
+
+    @Autowired
+    private ERPTransactionService erpTransactionService;
 
     @GetMapping("/get")
     public APIResponse<List<TransactionsDTO>> getAllTransactions() {
@@ -43,4 +51,41 @@ public class TransactionsController {
             );
         }
     }
+
+  @PostMapping("/erp_upload")
+  public APIResponse<String> uploadErpTransactions(@RequestParam("file") MultipartFile file) {
+      if (file.isEmpty()) {
+          return new APIResponse<>(
+                  "500",
+                  "error",
+                  null,
+                  null
+          );
+      }
+
+      try (Reader reader = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8)) {
+          if (reader.markSupported()) {
+              reader.mark(1);
+              if (reader.read() != 0xFEFF) {
+                  reader.reset(); // not the BOM marker
+              }
+          }
+          Iterable<CSVRecord> records = CSVFormat.DEFAULT.withFirstRecordAsHeader().parse(reader);
+
+          erpTransactionService.csvToDatabase(records);
+          return new APIResponse<>(
+                  "400",
+                  "sucess",
+                  null,
+                  null
+          );
+      } catch (Exception e) {
+          return new APIResponse<>(
+                  "500",
+                  "error",
+                  null,
+                  null
+          );
+      }
+  }
 }
