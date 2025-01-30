@@ -1,5 +1,6 @@
 package com.syncledger.transactionsAPI.controllers;
 
+import com.syncledger.transactionsAPI.entities.DTO.ERPTransactionsDTO;
 import com.syncledger.transactionsAPI.entities.DTO.TransactionsDTO;
 import com.syncledger.transactionsAPI.entities.Transaction;
 import com.syncledger.transactionsAPI.entities.response.APIResponse;
@@ -33,7 +34,6 @@ public class TransactionsController {
     @GetMapping("/get")
     public APIResponse<List<TransactionsDTO>> getAllTransactions() {
         try {
-        System.out.println("Transactions Request Processing");
         List<Transaction> transactions = transactionRepository.findAll();
         List<TransactionsDTO> data = transactions.stream().map(transactionDTOMapper::mapToDTO).toList();
         return new APIResponse<>(
@@ -52,8 +52,19 @@ public class TransactionsController {
         }
     }
 
-  @PostMapping("/erp_upload")
-  public APIResponse<String> uploadErpTransactions(@RequestParam("file") MultipartFile file) {
+    @GetMapping
+    public APIResponse<List<ERPTransactionsDTO>> getAllERPTransactions() {
+        List<ERPTransactionsDTO> dto = erpTransactionService.getAllERPTransactions();
+        return new APIResponse<>(
+                "200",
+                "success",
+                dto,
+                null
+        );
+    }
+
+    @PostMapping("/erp_upload")
+    public APIResponse<String> uploadErpTransactions(@RequestParam("file") MultipartFile file) {
       if (file.isEmpty()) {
           return new APIResponse<>(
                   "500",
