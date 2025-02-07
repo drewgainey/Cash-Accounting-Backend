@@ -52,7 +52,7 @@ public class TransactionsController {
         }
     }
 
-    @GetMapping
+    @GetMapping("erp")
     public APIResponse<List<ERPTransactionsDTO>> getAllERPTransactions() {
         List<ERPTransactionsDTO> dto = erpTransactionService.getAllERPTransactions();
         return new APIResponse<>(

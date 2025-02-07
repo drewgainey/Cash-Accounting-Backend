@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.syncledger.grpc";
+option java_outer_classname = "AccessTokens";
+
+package accessTokens;
+
+// The service definition.
+service GetAccessTokens {
+  // Sends a greeting
+  rpc GetTokens (TokenRequest) returns (TokenReply) {}
+}
+
+// The request message
+message TokenRequest {
+  string account = 1;
+}
+
+// The response message
+message TokenReply {
+  string itemId = 1;
+  string accessToken = 2;
+  string transactionsCursor = 3;
+}
